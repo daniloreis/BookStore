@@ -21,13 +21,17 @@ Sistema backend completo em C# .NET 10 para gerenciamento de livros e empréstim
 ### Pré-requisitos
 
 - .NET 10 SDK
+- .NET EF:
+          dotnet tool install --global dotnet-ef
+          dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+          dotnet add package Microsoft.EntityFrameworkCore.Design
 - Docker e Docker Compose
 - Git
 
 ### 1. Clonar o Repositório
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/daniloreis/BookStore.git
 cd BookStore
 ```
 
@@ -45,7 +49,7 @@ Isso inicia:
 
 ```bash
 cd src/BookStore.Api
-dotnet ef migrations add Initial
+dotnet ef migrations add Initial --project ../BookStore.Infrastructure
 dotnet ef database update
 cd ../../
 ```
@@ -56,7 +60,7 @@ cd ../../
 dotnet run --project src/BookStore.Api
 ```
 
-A API estará disponível em: `https://localhost:7040`
+A API estará disponível em: `http://localhost:5054/swagger/index.html`
 
 ### 5. Executar Testes
 
@@ -77,7 +81,7 @@ dotnet test
 #### Exemplo - Criar Livro
 
 ```bash
-curl -X POST https://localhost:7040/api/livros \
+curl -X POST https://localhost:5054/api/livros \
   -H "Content-Type: application/json" \
   -d '{
     "titulo": "O Cortiço",
@@ -99,7 +103,7 @@ curl -X POST https://localhost:7040/api/livros \
 #### Exemplo - Solicitar Empréstimo
 
 ```bash
-curl -X POST https://localhost:7040/api/emprestimos \
+curl -X POST https://localhost:5054/api/emprestimos \
   -H "Content-Type: application/json" \
   -d '{
     "livroId": "<uuid-do-livro>"
@@ -109,7 +113,7 @@ curl -X POST https://localhost:7040/api/emprestimos \
 #### Exemplo - Devolver Empréstimo
 
 ```bash
-curl -X PUT https://localhost:7040/api/emprestimos/<uuid-emprestimo>/devolver
+curl -X PUT https://localhost:5054/api/emprestimos/<uuid-emprestimo>/devolver
 ```
 
 ## 🔧 Configuração
@@ -122,7 +126,7 @@ Editar `src/BookStore.Api/appsettings.json`:
 {
   "ConnectionStrings": {
     "PostgreSql": "Host=localhost;Port=5432;Database=bookstore;Username=postgres;Password=postgres",
-    "MongoDB": "mongodb://localhost:27017"
+    "MongoDB": "mongodb://mongoadmin:mongoadmin@localhost:27017/BookstoreDb?authSource=admin"
   }
 }
 ```
@@ -170,7 +174,7 @@ BookStore/
 2. **Handler (Application)**: Valida regra de negócio no PostgreSQL
 3. **Evento**: Handler publica evento via Event Bus
 4. **Subscriber**: Event Bus dispara handlers de sincronização
-5. **MongoDB**: Dados são sincronizados (eventual consistency)
+5. **MongoDB**: Dados são sincronizados
 6. **Query (Leitura)**: Usuario faz GET, retorna dados do MongoDB
 
 ## ⚠️ Considerações Importantes
@@ -181,7 +185,7 @@ BookStore/
 ### Inconsistência Eventual
 - Janela entre escrita no PostgreSQL e sincronização no MongoDB
 - Queries podem retornar dados desatualizados por alguns milissegundos
-- Próxima solicitação de empréstimo sempre valida no PostgreSQL (source of truth)
+- Próxima solicitação de empréstimo sempre valida no PostgreSQL
 
 ### Recuperação de Falhas
 - Event Bus em memória: eventos perdem-se se app reinicia
@@ -225,7 +229,3 @@ docker-compose up -d
 ## 📖 Documentação Adicional
 
 Ver `DECISIONS.md` para análise detalhada das decisões arquiteturais.
-
-## 📄 Licença
-
-MIT

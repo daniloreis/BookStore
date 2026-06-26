@@ -7,6 +7,7 @@ namespace BookStore.Infrastructure.Persistence;
 public class MongoLivro
 {
     [BsonId]
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid Id { get; set; }
     public string Titulo { get; set; }
     public string Autor { get; set; }
@@ -19,6 +20,7 @@ public class MongoLivro
 public class MongoEmprestimo
 {
     [BsonId]
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid Id { get; set; }
     public Guid LivroId { get; set; }
     public string TituloLivro { get; set; }
