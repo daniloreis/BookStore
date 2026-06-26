@@ -42,7 +42,7 @@ public class ObterLivroHandler
         _mongoDb = mongoDb;
     }
 
-    public async Task<LivroDto> Handle(ObterLivroQuery query)
+    public async Task<LivroDto?> Handle(ObterLivroQuery query)
     {
         var livro = await _mongoDb.Livros
             .Find(l => l.Id == query.Id)

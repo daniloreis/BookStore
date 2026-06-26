@@ -11,8 +11,8 @@ public class MongoLivro
     [BsonId]
     [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid Id { get; set; }
-    public string Titulo { get; set; }
-    public string Autor { get; set; }
+    public string Titulo { get; set; } = string.Empty;
+    public string Autor { get; set; } = string.Empty;
     public int? AnoPub { get; set; }
     public int QtdeDisponivel { get; set; }
     public DateTime DataCriacao { get; set; }
@@ -26,11 +26,11 @@ public class MongoEmprestimo
     public Guid Id { get; set; }
     [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid LivroId { get; set; }
-    public string TituloLivro { get; set; }
-    public string AutorLivro { get; set; }
+    public string TituloLivro { get; set; } = string.Empty;
+    public string AutorLivro { get; set; } = string.Empty;
     public DateTime DataEmprestimo { get; set; }
     public DateTime? DataDevolucao { get; set; }
-    public string Status { get; set; }
+    public string Status { get; set; } = string.Empty;
     public DateTime DataCriacao { get; set; }
     public DateTime? DataUltimaAtualizacao { get; set; }
 }

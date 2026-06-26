@@ -44,7 +44,7 @@ public class ObterEmprestimoHandler
         _mongoDb = mongoDb;
     }
 
-    public async Task<EmprestimoDto> Handle(ObterEmprestimoQuery query)
+    public async Task<EmprestimoDto?> Handle(ObterEmprestimoQuery query)
     {
         var emprestimo = await _mongoDb.Emprestimos
             .Find(e => e.Id == query.Id)
