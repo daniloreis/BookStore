@@ -192,9 +192,9 @@ O fluxo de comando continua como se o evento tivesse sido processado com sucesso
 
 ## 7. Trade-offs gerais 
 
-Não utilizei fila morta (DLQ) por entender que é uma fila simples que uma vez implementada não haverá risco de mensagem com erro. 
-Mas eu poderia colocar para nos casos de falha garantir a resiliência.
-
+1. Não utilizei fila morta (DLQ) por entender que é uma fila simples que uma vez implementada não haverá risco de mensagem com erro. Mas eu poderia colocar para nos casos de falha garantir a resiliência.
+2. Latência de escrita: Seria mais lento se tivesse que aguardar a confirmação do Mongo.
+3. Optei pela velocidade invés da resiliência.
 ---
 
 
