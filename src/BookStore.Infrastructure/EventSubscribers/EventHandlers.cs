@@ -1,6 +1,7 @@
 using BookStore.Application.Interfaces;
 using BookStore.Domain.Events;
 using BookStore.Infrastructure.Persistence;
+using Microsoft.Extensions.Logging;
 using MongoDB.Driver;
 
 namespace BookStore.Infrastructure.EventSubscribers;
@@ -8,10 +9,12 @@ namespace BookStore.Infrastructure.EventSubscribers;
 public class EmprestimoCriadoEventHandler : IEventHandler<EmprestimoCriadoEvent>
 {
     private readonly MongoDbContext _mongoDb;
+    private readonly ILogger<EmprestimoCriadoEventHandler> _logger;
 
-    public EmprestimoCriadoEventHandler(MongoDbContext mongoDb)
+    public EmprestimoCriadoEventHandler(MongoDbContext mongoDb, ILogger<EmprestimoCriadoEventHandler> logger)
     {
         _mongoDb = mongoDb;
+        _logger = logger;
     }
 
     public async Task Handle(EmprestimoCriadoEvent @event)
@@ -40,7 +43,7 @@ public class EmprestimoCriadoEventHandler : IEventHandler<EmprestimoCriadoEvent>
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Erro ao sincronizar EmprestimoCriadoEvent: {ex.Message}");
+            _logger.LogError(ex, "Erro ao sincronizar EmprestimoCriadoEvent");
         }
     }
 }
@@ -48,10 +51,12 @@ public class EmprestimoCriadoEventHandler : IEventHandler<EmprestimoCriadoEvent>
 public class EmprestimoDevolvidoEventHandler : IEventHandler<EmprestimoDevolvidoEvent>
 {
     private readonly MongoDbContext _mongoDb;
+    private readonly ILogger<EmprestimoDevolvidoEventHandler> _logger;
 
-    public EmprestimoDevolvidoEventHandler(MongoDbContext mongoDb)
+    public EmprestimoDevolvidoEventHandler(MongoDbContext mongoDb, ILogger<EmprestimoDevolvidoEventHandler> logger)
     {
         _mongoDb = mongoDb;
+        _logger = logger;
     }
 
     public async Task Handle(EmprestimoDevolvidoEvent @event)
@@ -70,7 +75,7 @@ public class EmprestimoDevolvidoEventHandler : IEventHandler<EmprestimoDevolvido
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Erro ao sincronizar EmprestimoDevolvidoEvent: {ex.Message}");
+            _logger.LogError(ex, "Erro ao sincronizar EmprestimoDevolvidoEvent");
         }
     }
 }
@@ -78,10 +83,12 @@ public class EmprestimoDevolvidoEventHandler : IEventHandler<EmprestimoDevolvido
 public class LivroAtualizadoEventHandler : IEventHandler<LivroAtualizadoEvent>
 {
     private readonly MongoDbContext _mongoDb;
+    private readonly ILogger<LivroAtualizadoEventHandler> _logger;
 
-    public LivroAtualizadoEventHandler(MongoDbContext mongoDb)
+    public LivroAtualizadoEventHandler(MongoDbContext mongoDb, ILogger<LivroAtualizadoEventHandler> logger)
     {
         _mongoDb = mongoDb;
+        _logger = logger;
     }
 
     public async Task Handle(LivroAtualizadoEvent @event)
@@ -100,7 +107,7 @@ public class LivroAtualizadoEventHandler : IEventHandler<LivroAtualizadoEvent>
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"Erro ao sincronizar LivroAtualizadoEvent: {ex.Message}");
+            _logger.LogError(ex, "Erro ao sincronizar LivroAtualizadoEvent");
         }
     }
 }

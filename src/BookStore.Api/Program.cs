@@ -45,22 +45,19 @@ builder.Services.AddScoped<ObterLivroHandler>();
 builder.Services.AddScoped<ListarEmprestimosHandler>();
 builder.Services.AddScoped<ObterEmprestimoHandler>();
 
-builder.Services.AddScoped<EmprestimoCriadoEventHandler>();
-builder.Services.AddScoped<EmprestimoDevolvidoEventHandler>();
-builder.Services.AddScoped<LivroAtualizadoEventHandler>();
+builder.Services.AddSingleton<EmprestimoCriadoEventHandler>();
+builder.Services.AddSingleton<EmprestimoDevolvidoEventHandler>();
+builder.Services.AddSingleton<LivroAtualizadoEventHandler>();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var emprestimoCriadoHandler = scope.ServiceProvider.GetRequiredService<EmprestimoCriadoEventHandler>();
-    var emprestimoDevolvidoHandler = scope.ServiceProvider.GetRequiredService<EmprestimoDevolvidoEventHandler>();
-    var livroAtualizadoHandler = scope.ServiceProvider.GetRequiredService<LivroAtualizadoEventHandler>();
+var emprestimoCriadoHandler = app.Services.GetRequiredService<EmprestimoCriadoEventHandler>();
+var emprestimoDevolvidoHandler = app.Services.GetRequiredService<EmprestimoDevolvidoEventHandler>();
+var livroAtualizadoHandler = app.Services.GetRequiredService<LivroAtualizadoEventHandler>();
 
-    eventBus.Subscribe<EmprestimoCriadoEvent>(emprestimoCriadoHandler);
-    eventBus.Subscribe<EmprestimoDevolvidoEvent>(emprestimoDevolvidoHandler);
-    eventBus.Subscribe<LivroAtualizadoEvent>(livroAtualizadoHandler);
-}
+eventBus.Subscribe<EmprestimoCriadoEvent>(emprestimoCriadoHandler);
+eventBus.Subscribe<EmprestimoDevolvidoEvent>(emprestimoDevolvidoHandler);
+eventBus.Subscribe<LivroAtualizadoEvent>(livroAtualizadoHandler);
 
 if (app.Environment.IsDevelopment())
 {

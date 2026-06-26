@@ -1,5 +1,7 @@
 using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
 
 namespace BookStore.Infrastructure.Persistence;
@@ -22,6 +24,7 @@ public class MongoEmprestimo
     [BsonId]
     [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid Id { get; set; }
+    [BsonGuidRepresentation(GuidRepresentation.Standard)]
     public Guid LivroId { get; set; }
     public string TituloLivro { get; set; }
     public string AutorLivro { get; set; }
@@ -38,7 +41,10 @@ public class MongoDbContext
 
     public MongoDbContext(string connectionString, string databaseName)
     {
-        var client = new MongoClient(connectionString);
+        BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+
+        var settings = MongoClientSettings.FromConnectionString(connectionString);
+        var client = new MongoClient(settings);
         _db = client.GetDatabase(databaseName);
     }
 
