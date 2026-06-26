@@ -22,9 +22,9 @@ Sistema backend completo em C# .NET 10 para gerenciamento de livros e empréstim
 
 - .NET 10 SDK
 - .NET EF:
-          dotnet tool install --global dotnet-ef
-          dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
-          dotnet add package Microsoft.EntityFrameworkCore.Design
+    dotnet tool install --global dotnet-ef;
+    dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL;
+    dotnet add package Microsoft.EntityFrameworkCore.Design;
 - Docker e Docker Compose
 - Git
 
